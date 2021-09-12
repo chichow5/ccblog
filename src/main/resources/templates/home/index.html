@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+      <!--xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">-->
+<head th:replace="comm/common :: header(~{this :: link})">
+      <link rel="stylesheet" th:href="@{/backend/css/blog.css}">
+</head>
+<body style="padding-top: 70px;">
+
+<nav th:replace="comm/common :: fixed-panel"></nav>
+
+<div class="container">
+      <div class="row">
+            <div class="col-sm-8 blog-main">
+                  <div th:each="article : ${articles}">
+                        <h2><a th:href="@{'/article/'+${article.id}}" style="color:black;">[[${article.title}]]</a></h2>
+                        <p> [[${article.content}]]</p>
+                        <div th:replace="comm/common:: article-detail"></div>
+                  </div>
+            </div>
+            <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+                  <div class="sidebar-module sidebar-module-inset">
+                        <h4>About</h4>
+                        <p>
+Hello world! This is ccblog!
+Hello world! This is ccblog!
+Hello world! This is ccblog!
+Hello world! This is ccblog!
+                        </p>
+                  </div>
+                  <div class="sidebar-module">
+                        <h4>About</h4>
+                        <p>
+Hello world! This is ccblog!
+Hello world! This is ccblog!
+Hello world! This is ccblog!
+Hello world! This is ccblog!
+                        </p>
+                  </div>
+            </div>
+      </div>
+      <div class="text-center">
+            <nav th:replace="comm/common :: paging('/page/')"></nav>
+      </div>
+</div>
+
+
+<div th:replace="comm/common :: footer"></div>
+</body>
+</html>

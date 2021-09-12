@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:fragment="header(links)">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CCBlog</title>
+  <link th:href="@{/backend/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/backend/css/signin.css}" rel="stylesheet">
+  <script th:src="@{/backend/js/jquery.min.js}"></script>
+  <script th:src="@{/backend/js/bootstrap.min.js}"></script>
+  <th:block th:replace="${links}" />
+</head>
+
+<body>
+<nav id="my-fixed-panel" th:fragment="fixed-panel" class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" th:href="@{/}">[[#{ccblog.project-name}]]</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a th:href="@{/}">[[#{fixed-panel.home}]]</a></li>
+        <li><a th:href="@{/about}">[[#{fixed-panel.about}]]</a></li>
+        <li><a th:href="@{/contact}">[[#{fixed-panel.contact}]]</a></li>
+        <li sec:authorize="hasRole('admin')"><a th:href="@{/admin/edit}">[[#{fixed-panel.write}]]</a></li>
+      </ul>
+      <ul sec:authorize="isAnonymous()" class="nav navbar-nav navbar-right">
+        <li><a th:href="@{/login}">[[#{login.login}]]</a></li>
+        <li><a th:href="@{/registry}">[[#{login.registry}]]</a></li>
+      </ul>
+      <ul sec:authorize="isAuthenticated()" class="nav navbar-nav navbar-right">
+        <li sec:authorize="hasRole('admin')"><a href="/admin">[[#{ccblog.admin-entrance}]]</a></li>
+        <li><a href="#" ><span sec:authentication="name"></span></a></li>
+        <li><a href="javascript:document.logoutform.submit()">[[#{login.logout}]]</a></li>
+        <form name="logoutform" th:action="@{/logout}" method="post" th:hidden="true">
+          <input hidden type="submit" value="sign out" />
+        </form>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<nav th:fragment="paging(prefix)">
+  <ul class="pagination pagination">
+    <li>
+      <a th:href="${webutils.PagingPrevious(prefix,currentpage)}" aria-label="Previous">
+        <span aria-hidden="true">«</span>
+      </a>
+    </li>
+    <li th:each="i: ${#numbers.sequence(1, pagecount)}" th:class="( (${currentpage} == ${i})? 'active' : '')">
+      <a th:href="@{${prefix} + ${i}}" >[[${i}]]</a>
+    </li>
+      <li>
+        <a th:href="${webutils.PagingNext(prefix,currentpage,pagecount)}" aria-label="Next">
+          <span aria-hidden="true">»</span>
+        </a>
+      </li>
+  </ul>
+</nav>
+
+<div th:fragment="article-detail">
+  <span class="badge">Posted <time th:text="${#dates.format(article.created,'yyyy-MM-dd')}"></time></span>
+  <div class="pull-right">
+    <span th:each="tag : ${webutils.splitBySpace(article.getTags())}" class="label label-default" style="margin-right:3px;">
+      <a href="#" style="color:white">
+        [[${tag}]]
+      </a>
+    </span>
+  </div>
+  <hr>
+</div>
+
+<div class="modal-footer" style="margin-top:30px;" th:fragment="footer">
+  <address class="text-center">
+    <p>关于博客 | 联系我 | &copy; CCBlog <time th:text="${#dates.format(new java.util.Date().getTime(),'yyyy')}"></time></p>
+    <div href="#">cc@ormail.cn</div>
+  </address>
+</div>
+
+</body>
+</html>

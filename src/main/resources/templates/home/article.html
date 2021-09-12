@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="comm/common :: header(~{this :: link})">
+    <link rel="stylesheet" th:href="@{/backend/css/blog.css}">
+</head>
+<body style="padding-top: 70px;">
+<nav th:replace="comm/common :: fixed-panel"></nav>
+
+<div class="container">
+    <div class="blog-header">
+        <h1 class="blog-title">
+            [[${article.title}]]
+        </h1>
+        <p class="lead blog-description">[[${webutils.cutString(article.content,30)}]]</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 blog-main">
+            <div class="blog-post">
+                <div class="blog-post-meta">
+                    <div class="pull-right">
+                        <span th:each="tag : ${webutils.splitBySpace(article.getTags())}" class="label label-default" style="margin-right:3px;">
+                            <a href="#" style="color:white">[[${tag}]]</a>
+                        </span>
+                    </div>
+                    <time th:text="${#dates.format(article.created,'yyyy-MM-dd')}"></time>
+                    <a sec:authorize="hasRole('admin')" th:href="@{'/admin/edit/' + ${article.id}}">
+                        [[#{editor.edit}]]
+                    </a>
+                    <a sec:authorize="hasRole('admin')" th:href="@{'/admin/delete/' + ${article.id}}">
+                        [[#{editor.delete}]]
+                    </a>
+                </div>
+                <div class="col-md-12">
+                    <div th:remove="tag" th:utext="${content}" ></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+            <div class="sidebar-module sidebar-module-inset">
+                <h4>About</h4>
+                <p>
+Hello world! This is ccblog!
+Hello world! This is ccblog!
+Hello world! This is ccblog!
+Hello world! This is ccblog!
+
+                </p>
+            </div>
+            <div class="sidebar-module">
+                <h4>About</h4>
+                <p>
+Hello world! This is ccblog!
+Hello world! This is ccblog!
+Hello world! This is ccblog!
+Hello world! This is ccblog!
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="comm/common :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+        <meta charset="utf-8" />
+        <title>CCBlog</title>
+        <link th:href="@{/backend/css/bootstrap.min.css}" rel="stylesheet">
+        <script th:src="@{/backend/js/bootstrap.min.js}"></script>
+        <link rel="stylesheet" th:href="@{/backend/css/style.css}" />
+        <link rel="stylesheet" th:href="@{/backend/css/editormd.css}" />
+        <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+</head>
+<body style="padding-top:70px;">
+
+<nav th:replace="comm/common::fixed-panel"></nav>
+
+<form th:action="@{'/admin/' + ${(article.id == null)? 'add':'update/' + article.id}}" method="post" >
+    <div class="container" id="on-fullscreen-hidden">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="input-group">
+                    <span class="input-group-addon">[[#{editor.summary}]]</span>
+                    <input type="text" class="form-control" name="content" th:value="${article.content}" maxlength="200" required>
+                </div>
+            </div>
+        </div>
+        <div style="height: 5px;"></div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon">[[#{editor.title}]]</span>
+                    <input type="text" class="form-control" name="title" th:value="${article.title}" maxlength="50" required>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon">[[#{editor.tag}]]</span>
+                    <input type="text" class="form-control" name="tags" th:value="${article.tags}">
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-7">
+                <div class="form-group">
+                    <select class="form-control" name="ctg_type">
+                        <option
+                                th:each="i: ${#numbers.sequence(0, categories.size()-1)}"
+                                th:value="${i}"
+                                th:selected="${i == article.ctg_type}">
+                            [[${categories.get(i)}]]
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-2 col-xs-5">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default form-control" style="border-radius:4px;" >[[#{editor.submit-btn}]]</button>
+                    </span>
+            </div>
+        </div>
+    </div>
+    <div id="layout">
+        <header>
+            <h1></h1>
+        </header>
+        <div id="test-editormd">
+            <textarea style="display:none;" th:utext="${content}"></textarea>
+        </div>
+    </div>
+</form>
+
+<div th:replace="comm/common::footer"></div>
+
+<script th:src="@{/backend/js/jquery.min.js}"></script>
+<script th:src="@{/backend/js/editormd.min.js}"></script>
+<script type="text/javascript">
+    var testEditor;
+    var group = document.getElementById("on-fullscreen-hidden");
+    var header = document.getElementById("my-fixed-panel");
+    $(function() {
+        testEditor = editormd("test-editormd", {
+            width   : "90%",
+            height  : 640,
+            syncScrolling : "single",
+            saveHTMLToTextarea : true,
+            tex : true,
+            path    : "/backend/editorlib/",
+
+            onfullscreen : function (){
+                header.style.display='none';
+                group.style.display='none';
+            },
+
+            onfullscreenExit :function (){
+                header.style.display='block';
+                group.style.display='block';
+            },
+        });
+    });
+</script>
+</body>
+</html>

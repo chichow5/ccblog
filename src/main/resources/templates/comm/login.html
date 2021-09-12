@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="comm/common :: header(~{})"></head>
+<body class="sign-body">
+<div class="container">
+    <!-- 用户登录 form 表单 -->
+    <form class="form-signin" th:action="@{/userLogin}" th:method="post">
+        <h2 class="form-signin-heading" th:text="#{login.tip}">请登录</h2>
+        <div th:if="${param.error}" class="alert alert-warning" role="alert" th:text="#{login.error}"></div>
+        <label for="input-username" class="sr-only" th:text="#{login.username}">用户名</label>
+        <input id="input-username" type="text" name="name" class="form-control" th:placeholder="#{login.username}" required autofocus>
+        <label for="input-password" class="sr-only" th:text="#{login.password}">密码</label>
+        <input id="input-password" type="password" name="password" class="form-control" th:placeholder="#{login.password}" required>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me">[[#{login.remember-me}]]
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">[[#{login.login}]]</button>
+    </form>
+</div>
+
+</body>
+</html>

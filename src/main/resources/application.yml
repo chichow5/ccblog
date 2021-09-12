@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+
+spring:
+  profiles:
+    active: jdbc,redis
+
+  thymeleaf:
+    cache: false
+
+  messages:
+    basename: i18n.login
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+  type-aliases-package: com.example.ccblog.module.domian
+
+blogconfig:
+  tb-user: user
+  tb-auth: authority
+  tb-user-auth: user_authority
+  token-valid-sec: 3600
+  markdown-folder: /home/chi/tmp/markdown
+  html-folder: /home/chi/tmp/html
